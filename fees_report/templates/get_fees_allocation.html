@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% block title %}Manage User{% endblock %}
+{% block body_block %}
+{% load static %}
+
+<!-- DataTables -->
+  <!-- Content Wrapper. Contains page content -->
+  <style type="text/css">
+    
+    .display1 input,.display1 select{display:none}
+    .dt-buttons {text-align: right;
+    width:100%; margin-bottom: 10px;
+  }
+  .dataTables_length{float:left;}
+  .dataTables_filter{width: 100%}
+  .btn-lg{min-width: 180px;}
+  @media screen and (max-width: 480px){
+    .btn-lg{width: 100%; margin-bottom: 6px;}
+  }
+  </style>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>List Of Fees</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Fees</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              
+              {% if perms.fees_report.add_fees_report %}
+                <a class="btn btn-lg btn-primary" href="{% url 'add_fees_structure' %}" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; margin:10px;text-align: center;" >Add Fees Structure</a>{% endif %}
+               
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="shTable" class="table table-bordered table-striped ">
+                  <thead>
+                    <tr id="filters">
+                      <th class="display1">Sr No</th>
+                      <th class="input-filter" >Title</th>
+                        <th class="display1">Description</th>
+                      <th class="display1">Class</th>
+                      <th class="display1">Division</th>
+                      <th class="display1">Total Fees</th>
+                      <th class="display1">Payment Received</th>
+                        <th class="display1">Count</th>
+                        <th class="display1">Posted By</th>
+                        <th class="display1">Posted Date</th>
+                        <th class="display1">Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                      <tr id="filters">
+                       <th class="display1">Sr No</th>
+                      <th class="input-filter" >Title</th>
+                          <th class="display1">Description</th>
+                      <th class="display1">Class</th>
+                      <th class="display1">Division</th>
+                      <th class="display1">Total Fees</th>
+                      <th class="display1">Payment Received</th>
+                        <th class="display1">Count</th>
+                        <th class="display1">Posted By</th>
+                        <th class="display1">Posted Date</th>
+                        <th class="display1">Action</th>
+                      </tr>
+                  </tfoot>                
+                </table>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+<!-- DataTables -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
+<script type="text/javascript">
+  {% autoescape off %}
+    var result_data = {{ data}};
+
+  {% endautoescape %}
+
+    $(document).ready(function() {
+
+
+    //   $('#shTable tfoot th.input-filter').each( function () {
+    //     var title = $(this).eq( $(this).index() ).text();
+    //     $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    // } );
+   
+    
+      var shTable=jQuery('#shTable').DataTable({
+        "aaData":result_data,
+        "responsive": true,
+        "autoWidth": false,
+        "dom": 'Blfrtip',
+          "buttons": [
+              
+              { "extend": 'excel', "text":'Export Excel',"className": 'btn btn-lg btn-primary float-right-top test' }
+          ],
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [ -1,-2 ] }, 
+            { "bSearchable": false, "aTargets": [ -1,-2 ] }
+        ],
+        initComplete: function () {
+
+
+
+            this.api().columns().every(function () {
+                var column = this;
+
+                if (column.index() == 0) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+
+
+                 if (column.index() == 2) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 3) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 4) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 5) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($("#filters").find("th").eq(column.index()))
+                    .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val());                                     
+
+                    column.search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+                
+                console.log(select);
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        }
+      });
+
+
+{#   $(document).on( 'click', '.editBut .delete', function () {#}
+{##}
+{#      var $this=$(this);#}
+{#      var module_id=$this.data('module_id');#}
+{#      var result=confirm("Are you sure, You want to delete the module?");#}
+{#      var btn = $this;#}
+{#      if (result == true) { #}
+{##}
+{#        $(btn).buttonLoader('start');#}
+{#        $.ajax({#}
+{#          'method':'POST',#}
+{#          'url':'/module_manager/delete_module',#}
+{#          'data':{"module_id":module_id},#}
+{#           success: function(response){#}
+{#            $(btn).buttonLoader('stop')#}
+{#            if(response.status=='success')#}
+{#            {#}
+{#              toastr.success(response.msg).delay(500)#}
+{#            }#}
+{#            else#}
+{#            {#}
+{#             toastr.success(response.msg).delay(500)#}
+{#            }#}
+{##}
+{#        },#}
+{#          error: function(xhr,status,errorThrown){#}
+{#            toastr.error(xhr.responseText)#}
+{#            $(btn).buttonLoader('stop')#}
+{#          },#}
+{#        });#}
+{#      }#}
+{##}
+{#   });#}
+
+   $(document).on( 'click', '.editBut', function () {
+
+      var $this=$(this);
+      var module_id=$this.data('module_id');
+      var result=confirm("Are you sure, You want to delete the module?");
+      var btn = $this;
+      if (result == true) {
+
+        $(btn).buttonLoader('start');
+        $.ajax({
+          'method':'POST',
+          'url':'/module_manager/delete_module',
+          'data':{"module_id":module_id},
+           success: function(response){
+            $(btn).buttonLoader('stop')
+            if(response.status=='success')
+            {
+              toastr.success(response.msg).delay(500)
+            }
+            else
+            {
+             toastr.success(response.msg).delay(500)
+            }
+
+        },
+          error: function(xhr,status,errorThrown){
+            toastr.error(xhr.responseText)
+            $(btn).buttonLoader('stop')
+          },
+        });
+      }
+
+   });
+
+   
+
+});
+
+ </script>
+
+{% endblock %}
+

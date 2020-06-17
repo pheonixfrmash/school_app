@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% block title %}Edit Resources{% endblock %}
+{% load static %}
+
+{% block content %}
+    <li>
+        <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left backBtn"></i> Back
+        </a>
+    </li>
+{% endblock %}
+
+{% block body_block %}
+<style type="text/css">
+        #viewschoolForm label.error {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e82d2d;
+            width: 100%;
+        }
+
+    </style>
+    <!-- Content Wrapper. Contains page content -->
+
+
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item active">Edit Resource</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+
+     <form role="form" method="post" enctype="multipart/form-data" id = "editresource">
+     <div class="card-body">
+     <div class="card-body mob-padding-0">
+       {% csrf_token %}
+      <div class="row">      
+    <div class="form-group">
+      <label for="view_resource">Edit Resource</label>
+    </div></div>
+    <div class="row">
+    <div class="col-lg-6">      
+    <div class="form-group">
+    <label>Resource Title<span class="text-danger">*</span></label><input class="form-control" type="text" name="resource_name" id="resource_name" placeholder="Resource Name">
+    </div></div>
+    <div class="col-lg-6">      
+    <div class="form-group">
+    <label >Resource Description<span class="text-danger">*</span></label><input class="form-control" type="text" name="resource_description" id="resource_description" placeholder="Resource Description">
+    </div></div></div><br>
+    <div class="row">
+    <div class="col-lg-4">      
+    <div class="form-group">
+      <label>Country <span class="text-danger">*</span></label>
+      <select class="form-control" id="country" name="country" multiple="multiple">
+
+            {% for country_data in country_data %}
+              <option value="{{country_data.id}}">{{country_data.name}}</option>
+              {% endfor %}
+      </select>
+    </div></div>
+       <div class="col-lg-4">      
+    <div class="form-group">
+      <label>State</label>
+      <select class="form-control" id="state" name="state" multiple="multiple">
+
+            {% for state_data in state_data %}
+              <option value="{{state_data.id}}">{{state_data.name}}</option>
+              {% endfor %}
+      </select>
+    </div></div>
+           <div class="col-lg-4">      
+    <div class="form-group">
+      <label>City</label>
+        <select class="form-control" id="city" name="city" multiple="multiple">
+    
+          {% for city_data in city_data %}
+            <option value="{{city_data.id}}">{{city_data.name}}</option>
+          {% endfor %}
+          </select>
+    </div></div></div><br>
+        <div class="row">
+           <div class="col-lg-4">      
+    <div class="form-group">
+      <label>School Name</label>
+      <select class="form-control" id="school" name='school' multiple="multiple">
+      <option value="">Select</option>
+      {% for school_data in school_data %}
+            <option value="{{school_data.id}}">{{school_data.name}}</option>
+      {% endfor %}
+      </select>
+      </div></div><br>
+          <div class="col-lg-4">      
+    <div class="form-group">
+      <label>School Board</label>
+      <select class="form-control" id="board" name="board" multiple="multiple">
+        <option  value="">---select---</option>
+        {% for board_data in board_data %}
+          <option value="{{board_data.id}}">{{board_data.name}}</option>
+        {% endfor %}
+      </select>
+    </div></div>
+    <div class="col-lg-4">      
+    <div class="form-group">
+      <label>School Class</label>
+      <select class="form-control" id="class_master" name="class_master" multiple="multiple">
+
+        {% for class_data in class_data %}
+          <option value="{{class_data.id}}">{{class_data.name}}</option>
+        {% endfor %}
+      </select>
+      </div></div></div><br>
+
+    <div class="row">
+        <div class="col-lg-4">      
+    <div class="form-group">
+      <label>Medium</label>
+      <select class="form-control" id="medium" name="medium" multiple="multiple">
+
+        {% for medium_data in medium_data %}
+          <option value="{{medium_data.id}}">{{medium_data.name}}</option>
+        {% endfor %}
+        </select>
+    </div></div>
+    <div class="col-lg-4">      
+    <div class="form-group">
+      <label>Category</label>
+        <select class="form-control" id="content_type" name="content_type">
+
+          {% for category in category %} 
+            <option value="{{category.id}}">{{category.name}}</option>
+            {% endfor %}
+          </select>
+    </div></div>
+    </div><br>
+       <div class="card-footer text-algn-cnt">
+        <button id ="save_resource" type="submit" style="margin-left: 220px;" class="btn btn-primary">Submit</button>
+        <button id="reset_form" type="cancel" style='margin-right:16px' class="btn btn-primary">Cancel</button>
+     
+    </div>
+    </br>
+  </form>
+</div>
+
+<script src="{% static 'plugins/jquery/jquery.min.js' %}">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/multi-select/0.9.12/js/jquery.multi-select.js" type="text/javascript"></script>
+<script type="text/javascript">
+function stringToDate(_date,_format,_delimiter)
+    {
+            var formatLowerCase=_format.toLowerCase();
+            var formatItems=formatLowerCase.split(_delimiter);
+            var dateItems=_date.split(_delimiter);
+            var monthIndex=formatItems.indexOf("mm");
+            var dayIndex=formatItems.indexOf("dd");
+            var yearIndex=formatItems.indexOf("yyyy");
+            var month=parseInt(dateItems[monthIndex]);
+            month-=1;
+            var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+            return formatedDate;
+       }
+function convertDate(inputFormat) {
+  function pad(s) { return (s < 10) ? '0' + s : s; }
+  var d = new Date(inputFormat)
+  return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
+} 
+
+        {% autoescape off %}
+            var result_data = {{data}};
+            var country_data = {{country_data}};
+            var state_data = {{state_data}};
+            var category = {{category}};
+            var class_data = {{class_data}};
+            var board_data = {{board_data}};
+            var medium_data = {{medium_data}};
+            var school_data = {{school_data}};
+            var category = {{category}};
+            var city_data = {{city_data}};
+            console.log(medium_data);
+            var i=1;
+            var index=0;
+            $("#resource_name").val(result_data['resource_title']);
+            $("#resource_description").val($.trim(result_data['resource_description']));
+            $("#content_type").val(result_data['content_type']);
+            
+
+      
+            var class_data = result_data['class_name'].split(',');
+            console.log(class_data);
+            for (i=0;i<class_data.length;i++)
+            { console.log(class_data[i]);
+              $("#class_master option[value='"+class_data[i]+"']").prop('selected' , true);
+            }
+
+
+            var board_data = result_data['board_name'].split(',');
+            for (i=0;i<board_data.length;i++)
+            { 
+              $("#board option[value='"+board_data[i]+"']").prop('selected' , true);
+            }
+
+            console.log(result_data['medium_name']);
+            var medium_data = result_data['medium_name'].split(',');
+            console.log(medium_data);
+            for (i=0;i<medium_data.length;i++)
+            { console.log(medium_data[i]);
+              $("#medium option[value='"+medium_data[i]+"']").prop('selected' , true);
+            }
+  
+            var country_data = result_data['country_name'].split(',');
+            for (i=0;i<country_data.length;i++)
+            { 
+              $("#country option[value='"+country_data[i]+"']").prop('selected' , true);
+            }
+
+            var state_data = result_data['state_name'].split(',');
+            for (i=0;i<state_data.length;i++)
+            { 
+              $("#state option[value='"+state_data[i]+"']").prop('selected' , true);
+            }
+           
+            var city_data = result_data['city_name'].split(',');
+            console.log(city_data);
+            for (i=0;i<city_data.length;i++)
+            { console.log(city_data[i]);
+              $("#city option[value='"+city_data[i]+"']").prop('selected' , true);
+            }
+            
+            var school_data = result_data['school_id'].split(',');
+            for (i=0;i<school_data.length;i++)
+            { 
+              $("#school option[value='"+school_data[i]+"']").prop('selected' , true);
+            }
+
+            $('#save_resource').val(result_data['ad_id']);
+            
+            $('#row'+0+'').remove();
+            
+
+        {% endautoescape %}
+
+
+</script>  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#ad_image").change(function(){
+        readURL(this);
+    });
+</script>
+
+{% endblock %}

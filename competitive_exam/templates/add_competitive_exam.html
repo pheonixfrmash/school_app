@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+{% block title %}Add User{% endblock %}
+{% load static %}
+
+{% block content %}
+<li>
+  <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left backBtn"></i> Back
+      </a>
+</li>
+{% endblock %}
+
+{% block body_block %}
+<style type="text/css">
+    #addexamForm label.error {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      width: 100%;
+    }
+    button.multiselect.dropdown-toggle.btn.btn-default{background: transparent !important;}
+  </style>
+
+ <!-- Content Wrapper. Contains page content -->
+
+ 
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Add Exam</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">          
+          <!-- right column -->
+          <div class="col-md-8" style="margin: 0 auto;">
+            <!-- general form elements disabled -->
+            <div class="card card-primary exam_fields">
+              <div class="card-header">
+                <h3 class="card-title">Post New Competitive Exam</h3>
+              </div>
+              <!-- /.card-header -->
+              <form role="form" method="post" id="addexamForm" enctype="multipart/form-data">
+                <div class="card-body">
+                  <div class="card-body mob-padding-0">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Exam Name <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="text" class="form-control" name="exam_name" id="exam_name" placeholder="Exam Name">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Description</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <textarea class="form-control" name="description" id="description" rows="3" placeholder="Description"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Country <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          
+                        <select class="form-control" id="country" name="country" multiple style="color: white">
+                         
+                              {% for country_data in country_data %}
+                                <option value="{{country_data.id}}">{{country_data.name}}</option>
+                                {% endfor %}
+                        </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>State <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="state" name="state" multiple>
+                            <option   selected="selected">---All State---</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>City <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="city" name="city" multiple>
+                            <option  selected="selected">---All City---</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Board <span class="text-danger">*</span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="board" name="board" multiple>
+                             
+                              {% for board_data in board_data %}
+                               <option value="{{board_data.id}}">{{board_data.name}}</option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Medium <span class="text-danger">*</span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="medium" name="medium" multiple>
+                             
+                              {% for medium_data in medium_data %}
+                               <option value="{{medium_data.id}}">{{medium_data.name}}</option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+
+                        
+
+
+                    <div class="row">
+                      
+                      
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>School <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="school" name="school" multiple>
+                            
+                            {% for school_data in school_data %}
+                             <option value="{{school_data.id}}">{{school_data.name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Class <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="class_master" name="class_master" multiple>
+                            
+                            {% for class_data in class_data %}
+                             <option value="{{class_data.id}}">{{class_data.name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label>Amount/Fees</label>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="amt-area">
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="amount" id="amount" placeholder="Amount/Fees">
+                          </div>
+                        </div>
+                        <div class="amt-text">
+                          <p>INR</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4"></div>
+                      <div class="col-sm-5">
+                        <div class="row">
+                          <div class="col-xs-4">
+                            <div class="form-group">
+                              <label>Tax</label>                                
+                            </div>
+                          </div>
+                          <div class="tax-per">
+                            <div class="form-group">
+                              <input type="number" class="form-control" name="per" value="18" id="per" readonly>
+                            </div>
+                          </div>
+                          <div class="per-symbol">
+                            <p>%</p>
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p>* Tax for delivery location with in MH will CGST + SGST (% equally dividend),<br>
+                          if Delivery Location is other than MH > Tax will IGST</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label>Total Amount after TAX</label>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="amt-area">
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="total_amount" id="total_amount" placeholder="Amount after Tax">
+                          </div>
+                        </div>
+                        <div class="amt-text">
+                          <p>INR</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Start Date <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="date" class="form-control" name="start_date" id="start_date" placeholder="Start Date">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Last Date <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="date" class="form-control" name="last_date" id="last_date" placeholder="Last Date">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Exam Date <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="date" class="form-control" name="exam_date" id="exam_date" placeholder="Exam Date">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4"></div>
+                      <div class="col-sm-3">
+                        <div class="card-footer text-center">
+                          <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="card-footer text-center">
+                            <a href="{% url 'get_competitive_exam' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                  <!-- /.card-body -->
+                </div>
+              </form>
+              <!-- /.card -->            
+            </div>
+            <!--/.col (right) -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock %}

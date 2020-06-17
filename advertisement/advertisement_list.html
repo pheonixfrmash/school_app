@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>School App | Log in</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static "plugins/fontawesome-free/css/all.min.css" %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static "plugins/icheck-bootstrap/icheck-bootstrap.min.css" %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static "dist/css/adminlte.min.css" %}">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{% static "plugins/toastr/toastr.min.css" %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style type="text/css">
+    #signinForm label.error {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      width: 100%;
+    }
+    .spinner {
+        display: inline-block;
+        opacity: 0;
+        width: 0;
+        -webkit-transition: opacity 0.25s, width 0.25s;
+        -moz-transition: opacity 0.25s, width 0.25s;
+        -o-transition: opacity 0.25s, width 0.25s;
+        transition: opacity 0.25s, width 0.25s;
+    }
+
+
+
+    .has-spinner.active {
+        cursor:progress;
+    }
+
+    .has-spinner.active .spinner {
+        opacity: 1;
+        width: auto;
+    }
+
+    .has-spinner.btn.active .spinner {
+        /*min-width: 20px;*/
+    }
+  </style>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a href="#"><img src="/media/logo/logo.png" width="200" height="200"></a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg"><b>View Ads</b></p>
+      <h1>Articles</h1>
+        <ul>
+        {% for article in object_list %}
+        <li>{{ article.message}} - {{ article.school_id }}-{{article.contact_name}}</li>
+        {% empty %}
+        <li>No articles yet.</li>
+        {% endfor %}
+        </ul>
+
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+<!-- /.login-box -->
+
+<script src="{% static "plugins/jquery/jquery.min.js" %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static "plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+<!-- AdminLTE App -->
+
+<!-- Toastr -->
+<script src="{% static "plugins/toastr/toastr.min.js" %}"></script>
+<script src="{% static "dist/js/adminlte.min.js" %}"></script>
+<script src="{% static "dist/js/jquery_validation/jquery.validate.min.js" %}"></script>
+<script src="{% static "dist/js/common.js" %}"></script>
+
+<script type="text/javascript">
+  {% autoescape off %}
+    var result_data = {{ ad_list}};
+  {% endautoescape %}
+
+    $(document).ready(function() {
+
+
+    //   $('#shTable tfoot th.input-filter').each( function () {
+    //     var title = $(this).eq( $(this).index() ).text();
+    //     $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    // } );
+   
+    
+      var shTable=jQuery('#shTable').DataTable({
+        "aaData":result_data,
+        "responsive": true,
+        "autoWidth": false,
+        "dom": 'Blfrtip',
+          "buttons": [
+              
+              { "extend": 'excel', "text":'Export Excel',"className": 'btn btn-lg btn-primary float-right-top test' }
+          ],
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [ -1,-2 ] }, 
+            { "bSearchable": false, "aTargets": [ -1,-2 ] }
+        ],
+        initComplete: function () {
+
+
+
+            this.api().columns().every(function () {
+                var column = this;
+
+                if (column.index() == 0) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+
+
+                 if (column.index() == 2) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 3) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 4) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 5) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($("#filters").find("th").eq(column.index()))
+                    .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val());                                     
+
+                    column.search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+                
+                console.log(select);
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        }
+      });
+      </script>
+</body>
+</html>
+

@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+{% block title %}Add User{% endblock %}
+{% load static %}
+
+{% block content %}
+<li>
+  <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left backBtn"></i> Back
+      </a>
+</li>
+{% endblock %}
+
+{% block body_block %}
+<style type="text/css">
+    #viewexamForm label.error {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      width: 100%;
+    }
+    button.multiselect.dropdown-toggle.btn.btn-default{background: transparent !important;}
+  </style>
+
+ <!-- Content Wrapper. Contains page content -->
+
+ 
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">View Exam</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">          
+          <!-- right column -->
+          <div class="col-md-8" style="margin: 0 auto;">
+            <!-- general form elements disabled -->
+            <div class="card card-primary exam_fields">
+              <div class="card-header">
+                <h3 class="card-title">View Competitive Exam</h3>
+              </div>
+              <!-- /.card-header -->
+              <form role="form" method="post" id="editexamForm" enctype="multipart/form-data">
+              <input type="hidden" id="competitive_exam_id" name="competitive_exam_id" value="{{ competitive_exam_id }}">
+                <div class="card-body">
+                  <div class="card-body mob-padding-0">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Exam Name <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="text" class="form-control" name="exam_name" id="exam_name" placeholder="Exam Name" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Description</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <textarea class="form-control" name="description" id="description" rows="3" placeholder="Description" disabled></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Country <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+
+                                                    <select class="form-control" id="country" name="country"
+                                                            value=this.value
+                                                            onchange="get_state(this.value)" multiple>
+
+                                                        {% for country_data in country_data %}
+                                                            <option value="{{ country_data.id }}">{{ country_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>State <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                         <select class="form-control" id="state" name="state"
+                                                            onchange="get_city(this.value)"
+                                                            multiple>
+
+                                                        {% for state_data in state_data %}
+                                                            <option value="{{ state_data.id }}">{{ state_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>City <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="city" name="city" multiple>
+
+                                                        {% for city_data in city_data %}
+                                                            <option value="{{ city_data.id }}">{{ city_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Board <span class="text-danger">*</span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="board" name="board"
+                                                            multiple>
+
+                                                        {% for board_data in board_data %}
+                                                            <option value="{{ board_data.id }}">{{ board_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Medium <span class="text-danger">*</span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="medium" name="medium"
+                                                            multiple="multiple">
+
+                                                        {% for board_data in medium_data %}
+                                                            <option value="{{ board_data.id }}">{{ board_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                        </div>
+                      </div>
+                    </div>
+
+                        
+
+
+                    <div class="row">
+                      
+                      
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>School <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select class="form-control" id="school" name='school'
+                                                            multiple>
+
+                                                        {% for school_data in school_data %}
+                                                            <option value="{{ school_data.id }}">{{ school_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Class <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                         <select class="form-control" id="class_master" name="class_master"
+                                                            multiple="multiple">
+
+                                                        {% for board_data in class_data %}
+                                                            <option value="{{ board_data.id }}">{{ board_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label>Amount/Fees</label>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="amt-area">
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="amount" id="amount" placeholder="Amount/Fees" disabled>
+                          </div>
+                        </div>
+                        <div class="amt-text">
+                          <p>INR</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4"></div>
+                      <div class="col-sm-5">
+                        <div class="row">
+                          <div class="col-xs-4">
+                            <div class="form-group">
+                              <label>Tax</label>                                
+                            </div>
+                          </div>
+                          <div class="tax-per">
+                            <div class="form-group">
+                              <input type="number" class="form-control" name="per" value="18" id="per" readonly>
+                            </div>
+                          </div>
+                          <div class="per-symbol">
+                            <p>%</p>
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p>* Tax for delivery location with in MH will CGST + SGST (% equally dividend),<br>
+                          if Delivery Location is other than MH > Tax will IGST</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label>Total Amount after TAX</label>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="amt-area">
+                          <div class="form-group">
+                            <input type="number" class="form-control" name="total_amount" id="total_amount" placeholder="Amount after Tax" disabled>
+                          </div>
+                        </div>
+                        <div class="amt-text">
+                          <p>INR</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Start Date <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="date" class="form-control" name="start_date" id="start_date" placeholder="Start Date" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Last Date <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="date" class="form-control" name="last_date" id="last_date" placeholder="Last Date" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Exam Date <span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="date" class="form-control" name="exam_date" id="exam_date" placeholder="Exam Date" disabled>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                  <!-- /.card-body -->
+                </div>
+              </form>
+              <!-- /.card -->            
+            </div>
+            <!--/.col (right) -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
+    <script type="text/javascript">
+        {% autoescape off %}
+            var result_data = {{ competitive_exam_transaction_data}};
+            var other_data = {{ competitive_exam_data}};
+            console.log(other_data)
+            console.log(result_data)
+
+            $("#exam_name").val(other_data[0])
+            $("#description").val(other_data[1])
+            $("#exam_tax").val(other_data[2])
+            $("#amount").val(other_data[3])
+            $("#total_amount").val(other_data[4])
+            $("#start_date").val(other_data[5])
+            $("#exam_date").val(other_data[6])
+            $("#last_date").val(other_data[7])
+
+            $.each(result_data[0], function (key, value) {
+
+                $('#country option[value=' + value + ']').prop('selected', true);
+            });
+            $("#country option:selected").attr('disabled','disabled');
+            $("#country").find('option').not(':selected').remove();
+            $.each(result_data[1], function (key, value) {
+
+                $('#state option[value=' + value + ']').prop('selected', true);
+            });
+            $("#state option:selected").attr('disabled','disabled');
+            $("#state").find('option').not(':selected').remove();
+            $.each(result_data[2], function (key, value) {
+
+                $('#city option[value=' + value + ']').prop('selected', true);
+            });
+            $("#city option:selected").attr('disabled','disabled');
+            $("#city").find('option').not(':selected').remove();
+            $.each(result_data[3], function (key, value) {
+
+                $('#school option[value=' + value + ']').prop('selected', true);
+            });
+            $("#school option:selected").attr('disabled','disabled');
+            $("#school").find('option').not(':selected').remove();
+            $.each(result_data[4], function (key, value) {
+                console.log(key, value)
+                $('#class_master option[value=' + value + ']').prop('selected', true);
+            });
+            $("#class_master option:selected").attr('disabled','disabled');
+            $("#class_master").find('option').not(':selected').remove();
+
+            $.each(result_data[5], function (key, value) {
+
+                $('#board option[value=' + value + ']').prop('selected', true);
+            });
+            $("#board option:selected").attr('disabled','disabled');
+            $("#board").find('option').not(':selected').remove();
+
+            $.each(result_data[6], function (key, value) {
+                $('#medium option[value=' + value + ']').prop('selected', true);
+            });
+            $("#medium option:selected").attr('disabled','disabled');
+            $("#medium").find('option').not(':selected').remove();
+
+
+        {% endautoescape %}
+
+
+    </script>
+    <script>
+    $(document).on('change','#medium',function(){
+        console.log('___________')
+{#        $("#school").find('option').not(':selected').remove();#}
+        $("#school").find('option').remove();
+    })
+    </script>
+{% endblock %}

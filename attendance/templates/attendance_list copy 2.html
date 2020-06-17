@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}View attendance{% endblock %}
+
+{% block body_block %}
+{% load static %}
+ <style type="text/css">
+    
+    .display1 input,.display1 select{display:none}
+    .dt-buttons {text-align: right;
+    width:100%; margin-bottom: 10px;
+  }
+  .dataTables_length{float:left;}
+  .dataTables_filter{width: 100%}
+  </style>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Attendance</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Attendance</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              
+              {% if perms.attendance.add_attendance %}
+                <a class="btn btn-lg btn-primary" href="{% url 'attendance_add' %}" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; margin:10px;text-align: center;">Add Attendance</a> {% endif %}
+                
+            </div>
+          </div>
+        </div>
+      </div>
+      <form role="form" method="post" enctype="multipart/form-data" id = "view_attd" {% if attdate|length > 0 %} style="visibility: hidden;"   {% else %}  style="display: block;" {% endif %}>
+         <div class="row">
+           <div class="col-lg-2">      
+              <div class="form-group">
+                 <label>Start Date</label><input type="date" class="form-control" name="start_date" id="start_date" placeholder="Attendance Date">
+              </div> 
+            </div> 
+            <div class="col-lg-2">      
+              <div class="form-group">
+                 <label>End Date</label><input type="date" class="form-control" name="end_date" id="end_date" placeholder="Attendance Date">
+              </div> 
+            </div> 
+            <div class="col-lg-2">      
+               <div class="form-group">
+                   <label>Class</label><select class="form-control" name="class_list" id="class_list" placeholder="Class">
+                    <option  value="" selected="selected">---select---</option>
+                    {% for st in class_list %}
+                    <option value= "{{ st.id }}" checked > {{ st.name }}</option>
+                  {% endfor %}
+                   </select>
+               </div> 
+            </div>
+            <div class="col-lg-2">      
+              <div class="form-group">
+                   <label>Division</label>
+                   <select class="form-control" name="division_list" id="division_list" placeholder="Division">
+                    <option  value="" selected="selected">---select---</option>
+                   {% for st in division_list %}
+                    <option value= "{{ st.id }}" checked > {{ st.name }}</option>
+                   {% endfor %}
+                  </select>
+              </div> 
+            </div>
+            <div class="col-lg-2">
+              <div class="form-group">
+                    <label></label>
+                 <button id ="view_att" type="submit" class="form-control">Submit</button> 
+              </div>  
+            </div>
+          </div> 
+        </form>
+        
+     <div class="card-body" id="list_attd" name="list_attd" {% if attdate|length > 0 %} style="display: block;" {% else %}   style="visibility: hidden;" {% endif %}>
+      <div class="row">
+        <div class="col-lg-3">      
+         <div class="form-group">
+          <label>Start Date</label><input type="date" class="form-control" value="{{attdate}}" readonly>
+        </div></div>
+        <div class="col-lg-3">      
+          <div class="form-group">
+           <label>End Date</label><input type="date" class="form-control" value="{{enddate}}" readonly>
+         </div></div>
+        <div class="col-lg-3">      
+          <div class="form-group">
+           <label>Class</label><input type="text" class="form-control" value="{{class_lists}}" readonly>
+         </div></div>
+         <div class="col-lg-3">      
+          <div class="form-group">
+           <label>Division</label><input type="text" class="form-control" value="{{division}}" readonly>
+         </div></div>
+      </div>
+      <div class="table-responsive">
+        <table id="shTable" class="table table-bordered table-striped "></table>
+      </div>
+    </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+  <!-- <script>
+
+    {% autoescape off %}
+      var result_data = {{data}};
+      var date_list={{date_list}};
+      console.log(date_list);
+      console.log(result_data);
+    {% endautoescape %}
+      var my_columns = ["Rollnumber","Name"];
+
+      // $.each( date_list, function(i,li) {
+      //           my_columns.push(date_list[i]);
+      //   });
+     var column_list=my_columns.concat(date_list);
+      console.log(column_list);
+
+      $(document).ready(function() {
+  
+  
+      //   $('#shTable tfoot th.input-filter').each( function () {
+      //     var title = $(this).eq( $(this).index() ).text();
+      //     $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+      // } );
+     
+       var shTable=jQuery('#shTable').DataTable({
+        "aaData":result_data,
+        // "columns": column_list,
+        "responsive": true,
+        "autoWidth": false,
+        "dom": 'Blfrtip',
+        // "columns":[
+
+        // ],
+        // "aoColumns": column_list,
+          "buttons": [
+              
+              { "extend": 'excel', "text":'Export Excel',"className": 'btn btn-lg btn-primary float-right-top test' }
+          ],
+        "aoColumnDefs": [
+
+            { "bSortable": false, "aTargets": [ -1] }, 
+            { "bSearchable": false, "aTargets": [ -1 ] }
+        ],
+        initComplete: function () {
+
+
+
+            this.api().columns(':gt(1)').every(function () {
+                var column = this;
+
+                if (column.index() == 0) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+
+
+                 if (column.index() == 2) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 3) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 4) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 5) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 6) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($("#filters").find("th").eq(column.index()))
+                    .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val());                                     
+
+                    column.search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+                
+                console.log(select);
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+     
+        }
+
+      });
+    })
+      </script> -->
+<script>
+    {% autoescape off %}
+      var result_data = {{data}};
+      var date_list={{date_list}};
+      console.log(date_list);
+      console.log(result_data);
+    {% endautoescape %}
+    $(document).ready(function() {
+    maketable(result_data,date_list)
+    })
+  function maketable(data,column_names){
+    var data = data;
+    var column_names = column_names;
+    console.log("script")
+    console.log(data);
+    console.log(column_names);
+    console.log(data[0][0]);
+    console.log(data[1][0]);
+    console.log(data[2][0]);
+    var columns = []
+    console.log(data.length);
+    // for (var j = 0;j < data.length; j++){
+      for (var i = 0; i < column_names.length; i++) {
+          columns[i] = {
+              'title': column_names[i],
+              'data': column_names[i]
+              
+          }
+          console.log(columns[i]);
+      // }
+
+    };
+    console.log(columns);
+    $('#shTable').DataTable({
+        data: data,
+        columns: columns,
+    }    );
+
+}
+</script>
+{% endblock %}

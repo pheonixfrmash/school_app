@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}Add User{% endblock %}
+{% load static %}
+
+{% block content %}
+    <li>
+        <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left backBtn"></i> Back
+        </a>
+    </li>
+{% endblock %}
+
+{% block body_block %}
+    <style type="text/css">
+        #addfeesstructForm label.error {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e82d2d;
+            width: 100%;
+        }
+
+        button, .btn-primary1 {
+            background-color: #ebeff3 !important;
+            border-color: #edf1f5 !important;
+            font-size: 15px !important;
+            border-radius: 35px !important;
+        }
+
+    </style>
+
+    <!-- Content Wrapper. Contains page content -->
+
+
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item active">Add Fees Structure</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- right column -->
+                    <div class="col-md-8" style="margin: 0 auto;">
+                        <!-- general form elements disabled -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Add Fees Structure</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <form role="form" method="post" id="addfeesstructForm" enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <div class="card-body mob-padding-0">
+                                        {% csrf_token %}
+                                        <div class="row">
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Class Name <span class="text-danger">*</span></label>
+                                                    <select class="form-control" id="class_master" name="class_master" multiple>
+                            
+                            {% for class_data in class_data %}
+                             <option value="{{class_data.id}}">{{class_data.name}}</option>
+                            {% endfor %}
+                          </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Division Name <span class="text-danger">*</span></label>
+                                                    <select class="form-control" id="division"
+                                                            name="division" multiple="multiple">
+                                                        
+                                                        {% for division_name in division_list %}
+                                                            <option value="{{ division_name.id }}">{{ division_name.division_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Due Date <span class="text-danger"></span></label>
+                            <input type="date" class="form-control" name="due_date" id="due_date" placeholder="Due Date">
+                        </div>
+                      </div>
+
+                                        </div>
+
+
+                                         <fieldset>
+                                            <legend>Fees Break Up</legend>
+
+                                            {% for fees_title_name in fees_title_list %}
+                                                <div class="row">
+                                                <div class="col-lg-4">
+                                                <label>{{ fees_title_name.title }}
+                                                </label>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                <input type="text" value="" id="fees_amt" name="fees_amt" placeholder="0"
+                                                       class="form-control form-group fees_amt">
+                                                </div>
+                                                </div>
+                                                <div class="row">
+                                                <div class="col-lg-4">
+                                                <input type="hidden" value="{{ fees_title_name.id }}" id="fees_id" name="fees_id"
+                                                       class="form-control form-group">
+                                                </div>
+                                                </div>
+                                            {% endfor %}
+                                         <div class="row">
+                                         <div class="col-lg-4">
+                                            <label>Total
+                                            </label>
+                                         </div>
+                                         <div class="col-lg-4">
+                                            <input type="text" id="fees_amt_total" name="fees_amt_total"
+                                                   class="form-control form-group" placeholder="Total" readonly>
+                                         </div>
+                                         </div>
+                                         </fieldset>
+
+
+
+                                    </div>
+
+                                    <div class="card-footer text-algn-cnt">
+                                        <button type="submit" style="margin-left: 220px;" class="btn btn-primary">
+                                            Submit
+                                        </button>
+
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                            </form>
+                            <!-- /.card -->
+                        </div>
+                        <!--/.col (right) -->
+                    </div>
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script>
+
+    $(document).on('input', ".fees_amt", function() {
+    var sum = 0;
+    $(".fees_amt").each(function(){
+        sum += +$(this).val();
+    });
+    $("#fees_amt_total").val(sum);
+});
+
+    </script>
+{% endblock %}

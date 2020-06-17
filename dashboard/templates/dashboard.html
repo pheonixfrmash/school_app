@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block body_block %}
+{% load static %}
+{% load custom_tags%}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Dashboard</h1>
+          </div><!-- /.col -->
+
+          <div class="col-sm-6">
+           <form role="form" method="get">
+          
+            <div class="row">
+            <div class="col-sm-5"></div>  
+            <div class="col-sm-5">
+
+              <div class="form-group">
+                <label>Date range</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="far fa-calendar-alt"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control float-right" name="searchDate" id="searchDate">
+                </div>
+             </div>
+            </div>
+            
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label>&nbsp;</label><br>
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            
+           
+          </div>  
+          
+          </form>
+
+          </div>
+
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info" style="background-color: #5DA5DA!important;">
+              <div class="inner">
+                <h3>800</h3>
+                <p>Total No Of Schools</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+             
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success" style="background-color: #FAA43A!important;">
+              <div class="inner">
+                <h3>8500</h3>
+
+                <p>Total Students</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning" style="background-color: #60BD68!important;">
+              <div class="inner">
+                <h3>150</h3>
+
+                <p>No Of Cities</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+            
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-4 col-6" >
+            <!-- small box -->
+            <div class="small-box bg-info" style="background-color: #B2912F!important;">
+              <div class="inner">
+                <h3>20</h3>
+
+                <p>No Of Countries</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+            
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success" style="background-color: #B276B2!important;">
+              <div class="inner">
+                <h3>2500</h3>
+
+                <p>No Of Teachers</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+           
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning" style="background-color: #DEC43F!important;">
+              <div class="inner">
+                <h3>2000</h3>
+
+                <p>Total Announcement</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+             
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning" style="background-color: #D85F3F!important;">
+              <div class="inner">
+                <h3>1200</h3>
+
+                <p>Total Assignments</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+             
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning" style="background-color: #DE4F3F!important;">
+              <div class="inner">
+                <h3>4000</h3>
+
+                <p>Total Resources</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+             
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning" style="background-color: #D55F3F!important;">
+              <div class="inner">
+                <h3>2050</h3>
+
+                <p>Total Posted</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+             
+            </div>
+          </div>
+
+          
+          <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+{% endblock %}
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{% static "dist/js/pages/dashboard.js" %}"></script>

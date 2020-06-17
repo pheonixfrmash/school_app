@@ -1,0 +1,137 @@
+
+{% extends "base.html" %}
+{% block title %}Manage Order{% endblock %}
+{% block body_block %}
+{% load static %}
+{% load custom_tags%}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Manage Roles</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item active">Manage Roles</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+  
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">List Of All Roles</h3>
+                <div class="card-tools">
+                
+                <a class="btn btn-block bg-gradient-primary btn-lg" href="{% url 'add_role' %}">Add Role</a>
+               
+              </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="table-responsive">
+                <table id="shTable" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Sr No</th>
+                    <th>Role Id</th>
+                    <th class="input-filter">Role Name</th>
+                    <th>Action</th>                  
+                  </tr>
+                  </thead>
+                  <tfoot>
+                      <tr>
+                          <th>Sr No</th>
+                          <th>Role Id</th>
+                          <th class="input-filter">Role Name</th>
+                          <th>Action</th> 
+                      </tr>
+                  </tfoot>
+                  
+                </table>
+              </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+  <!-- DataTables -->
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  
+  <script type="text/javascript">
+    {% autoescape off %}
+      var result_data = {{ data}};
+    {% endautoescape %}
+  
+      $(document).ready(function() {
+  
+  
+        $('#shTable tfoot th.input-filter').each( function () {
+          var title = $(this).eq( $(this).index() ).text();
+          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+      } );
+     
+      
+        var shTable=jQuery('#shTable').DataTable({
+          "aaData":result_data,
+          "responsive": true,
+          "autoWidth": false,
+          "aoColumnDefs": [
+              { "bSortable": false, "aTargets": [ -1,-2 ] }, 
+              { "bSearchable": false, "aTargets": [ -1,-2 ] }
+          ],
+          initComplete: function () {
+                  this.api().columns('.select-filter').every( function () {
+                      var column = this;
+                      var select = $('<select><option value=""></option></select>')
+                              .appendTo( $(column.footer()).empty() )
+                              .on( 'change', function () {
+                                  var val = $.fn.dataTable.util.escapeRegex(
+                                          $(this).val()
+                                  );
+   
+                                  column
+                                          .search( val ? '^'+val+'$' : '', true, false )
+                                          .draw();
+                              } );
+   
+                      column.data().unique().sort().each( function ( d, j ) {
+                          select.append( '<option value="'+d+'">'+d+'</option>' )
+                      } );
+                  } );
+                  this.api().columns('.input-filter').every( function () {
+                      var that = this;
+   
+                      $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                          if ( that.search() !== this.value ) {
+                              that
+                                  .search( this.value )
+                                  .draw();
+                          }
+                      } );
+                  } );
+              }
+        });
+  
+  });
+  
+   </script>
+
+{% endblock %}

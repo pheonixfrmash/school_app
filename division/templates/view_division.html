@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}View Division{% endblock %}
+{% load static %}
+
+{% block content %}
+    <li>
+        <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left backBtn"></i> Back
+        </a>
+    </li>
+{% endblock %}
+
+{% block body_block %}
+<style type="text/css">
+        #viewdivision label.error {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e82d2d;
+            width: 100%;
+        }
+
+    </style>
+    <!-- Content Wrapper. Contains page content -->
+
+
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item active">View Division</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+
+     <form role="form" method="post" enctype="multipart/form-data" id = "viewdivision">
+      <fieldset disabled="disabled">
+     <div class="card-body">
+     <div class="card-body mob-padding-0">
+       {% csrf_token %}
+      <div class="row">      
+    <div class="form-group">
+      <label for="view_resource">View Division</label>
+    </div></div>
+    <div class="row">
+    <div class="col-lg-6">      
+    <div class="form-group">
+    <label>Division name<span class="text-danger">*</span></label><input class="form-control" type="text" name="division_name" id="division_name" placeholder="Division Name">
+    </div></div>
+    <div class="col-lg-6">      
+    <div class="form-group">
+    <label >Division Description<span class="text-danger">*</span></label><input class="form-control" type="text" name="division_description" id="division_description" placeholder="Division Description">
+    </div></div></div><br>
+  </fieldset>
+  </form>
+</div>
+
+<script src="{% static 'plugins/jquery/jquery.min.js' %}">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/multi-select/0.9.12/js/jquery.multi-select.js" type="text/javascript"></script>
+<script type="text/javascript">
+function stringToDate(_date,_format,_delimiter)
+    {
+            var formatLowerCase=_format.toLowerCase();
+            var formatItems=formatLowerCase.split(_delimiter);
+            var dateItems=_date.split(_delimiter);
+            var monthIndex=formatItems.indexOf("mm");
+            var dayIndex=formatItems.indexOf("dd");
+            var yearIndex=formatItems.indexOf("yyyy");
+            var month=parseInt(dateItems[monthIndex]);
+            month-=1;
+            var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+            return formatedDate;
+       }
+function convertDate(inputFormat) {
+  function pad(s) { return (s < 10) ? '0' + s : s; }
+  var d = new Date(inputFormat)
+  return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
+} 
+
+        {% autoescape off %}
+            var result_data = {{data}};
+            var i=1;
+            var index=0;
+            $("#division_name").val(result_data['division_name']);
+            $("#division_description").val($.trim(result_data['division_desc']));
+      
+            $('#save_resource').val(result_data['ad_id']);
+            
+            $('#row'+0+'').remove();
+            
+
+        {% endautoescape %}
+
+
+</script>  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#ad_image").change(function(){
+        readURL(this);
+    });
+</script>
+
+{% endblock %}

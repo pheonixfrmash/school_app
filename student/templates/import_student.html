@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Add Wholesaler{% endblock %}
+{% load static %}
+
+{% block body_block %}
+<style type="text/css">
+    #uploadCSVstudent label.error {
+      display: inline-block;
+      max-widtd: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      widtd: 100%;
+    }
+    table tr td{font-size: 14px;}
+
+  </style>
+
+ <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Import Student</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row" >
+
+          <!-- right column -->
+          <div class="col-md-8" style="margin: 0 auto;">
+            <!-- general form elements disabled -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Import Student</h3>
+              </div>
+              <!-- /.card-header -->
+              <form metdod="POST" id="uploadCSVstudent" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="customFile">Upload a Excel File <span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" name="file" id="file" >
+                          <!-- <p id="showerror"></p> -->
+                          <label class="custom-file-label" for="file">Choose file</label>
+                        </div>
+                        <p>*File Type allowed will be .xls, csv</p>
+                        <p class="text-left"><a href="{% url 'send_file_student' %}" class="download-file-btn"><b>Download Sample Excel File</b></a></p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                  <button type="submit" class="btn btn-primary" id="cancelBtn">Cancel</button>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <p style="margin-bottom: 0;">*If any record will have problem tden no records will be inserted</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <p><b>Template Formate</b></p>
+                      <table width="100%" border="1" cellpadding="3">
+                        <tdead>
+                          <tr>
+                            <td>Class</td>
+                            <td>Division</td>
+                            <td>Roll No</td>
+                            <td>Student Name</td>
+                            <td>Student DOB</td>
+                            <td>Student Residence Address</td>
+                            <td>Primary Parent Name</td>
+                            <td>Primary Parent Mobile No</td>
+                            <td>Primary Parent Email ID</td>
+                            <td>Secondry Parent Name</td>
+                            <td>Secondry Parent Mobile No</td>
+                            <td>Secondry Parent Email ID</td>
+                          </tr>
+                        </tdead>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </form>   
+
+  
+          </div>
+          <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

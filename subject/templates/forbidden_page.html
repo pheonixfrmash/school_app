@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Add Subject{% endblock %}
+{% load static %}
+
+{% block content %}
+    <li>
+        <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left backBtn"></i> Back
+        </a>
+    </li>
+{% endblock %}
+{% block body_block %}
+<style type="text/css">
+    #upload_subject label.error {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      width: 100%;
+    }
+    
+  </style>
+
+ <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row" >
+          
+          <!-- right column -->
+          <div class="col-md-5" style="margin: 0 auto;">
+            <!-- general form elements disabled -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Error</h3>
+              </div>
+              <!-- /.card-header -->
+                  {% csrf_token %}
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                          
+                            <div class="form-group">
+                                <div><p> <span>ERROR CODE</span>: "<i>HTTP 403 Forbidden</i>"</p>
+                                    <p> <span>ERROR DESCRIPTION</span>: "<i>Access Denied. You Do Not Have The Permission To Access This Page On This Server</i>"</p>
+                                    <p> <span>ERROR POSSIBLY CAUSED BY</span>: [<b>execute access forbidden, read access forbidden, write access forbidden, ssl required, ssl 128 required, ip address rejected, client certificate required, site access denied, too many users, invalid configuration, password change, mapper denied access, client certificate revoked, directory listing denied, client access licenses exceeded, client certificate is untrusted or invalid, client certificate has expired or is not yet valid, passport logon failed, source access denied, infinite depth is denied, too many requests from the same client ip</b>...]</p>
+                                    <p> <span>SOME PAGES ON THIS SERVER THAT YOU DO HAVE PERMISSION TO ACCESS</span>: [<a href="/dashboard/">Home Page</a>...]</p><p> <span>HAVE A NICE DAY :-)</span></p>
+                                    </div>
+                                    
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>  
+          </div>
+          <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Add User{% endblock %}
+{% load static %}
+
+{% block content %}
+    <li>
+        <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left backBtn"></i> Back
+        </a>
+    </li>
+{% endblock %}
+
+{% block body_block %}
+    <style type="text/css">
+        #editfeesForm label.error {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e82d2d;
+            width: 100%;
+        }
+
+        button, .btn-primary1 {
+            background-color: #ebeff3 !important;
+            border-color: #edf1f5 !important;
+            font-size: 15px !important;
+            border-radius: 35px !important;
+        }
+
+    </style>
+
+    <!-- Content Wrapper. Contains page content -->
+
+
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item active">Edit Fees</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <!-- right column -->
+                    <div class="col-md-8" style="margin: 0 auto;">
+                        <!-- general form elements disabled -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Edit Fees</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <form role="form" method="post" id="editfeesForm" enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                         <input type="hidden" name="fees_id_pk" id="fees_id_pk"
+                                                       value="{{ fees_id_pk }}">
+                                        <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Fees Title <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="fees_title"
+                                                           id="fees_title" placeholder="Fees Title">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+
+                                                <div class="form-group">
+                                                    <label>Fees Description <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="fees_desc"
+                                                           id="fees_desc" placeholder="Fees Description">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Bank Name <span class="text-danger">*</span></label>
+                                                    <select class="form-control" id="fees_bank_name" name="fees_bank_name">
+                                                        <option value="" selected="selected">---select---</option>
+
+                                                        {% for bank_name in bank_list %}
+                                                            <option value="{{ bank_name.id }}">{{ bank_name.bank_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Account No <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="fees_account_no"
+                                                           id="fees_account_no" placeholder="Account Number" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <button type="submit" style="margin-left: 220px;" class="btn btn-primary">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- /.card-body -->
+                        </div>
+
+                        <!-- /.card -->
+
+                    </div>
+                    <!--/.col (right) -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script type="text/javascript">
+        {% autoescape off %}
+            var result_data = {{ data}};
+            console.log(result_data)
+            var i = 1;
+            var index = 0;
+            $("#fees_desc").val(result_data[0])
+            $("#fees_bank_name").val(result_data[1])
+            $("#fees_account_no").val(result_data[2])
+            $("#fees_title").val(result_data[3])
+        {% endautoescape %}
+
+
+    </script>
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
+{% endblock %}

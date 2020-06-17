@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Ads{% endblock %}
+
+{% block body_block %}
+{% load static %}
+ <style type="text/css">
+    
+    .display1 input,.display1 select{display:none}
+    .dt-buttons {text-align: right;
+    width:100%; margin-bottom: 10px;
+  }
+  .dataTables_length{float:left;}
+  .dataTables_filter{width: 100%}
+  </style>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>List Of Advertisements</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Advertisements</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              
+              
+                <a class="btn btn-lg btn-primary float-left" href="{% url 'web_add' %}">Add Ads</a>
+              
+            </div>
+     <div class="card-body">
+        <div class="table-responsive">
+        <table id="shTable" class="table table-bordered table-striped ">
+        <thead>
+          <tr id="filters">
+            <th class="display1"> Sr No </th>
+            <th class="input-filter">Ad name</th>
+            <th class="display1">Ad section</th>
+            <th class="display1">School Name</th>
+            <th class="display1">School class</th>
+            <th class="display1">Contact Name</th>
+            <th class="display1">Mobile Number</th>
+            <th class="display1">Start Date</th>
+            <th class="display1">End Date</th>
+            <th class="display1">Status</th>
+            <th class="display1">Actions</th>
+          </tr>
+        </thead>
+  <tfoot>
+   <tr id="filters">
+            <th class="display1"> Sr No </th>
+            <th class="input-filter">Ad name</th>
+            <th class="display1">Ad section</th>
+            <th class="display1">School Name</th>
+            <th class="display1">School class</th>
+            <th class="display1">Contact Name</th>
+            <th class="display1">Mobile Number</th>
+            <th class="display1">Start Date</th>
+            <th class="display1">End Date</th>
+            <th class="display1">Status</th>
+            <th class="display1">Actions</th>
+          </tr>
+  </tfoot>
+      </table> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script>
+
+  {% autoescape off %}
+    var result_data = {{data}};
+  {% endautoescape %}
+    
+    $(document).ready(function() {
+
+
+    //   $('#shTable tfoot th.input-filter').each( function () {
+    //     var title = $(this).eq( $(this).index() ).text();
+    //     $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    // } );
+   
+     var shTable=jQuery('#shTable').DataTable({
+        "aaData":result_data,
+        "responsive": true,
+        "autoWidth": false,
+        "dom": 'Blfrtip',
+          "buttons": [
+              
+              { "extend": 'excel', "text":'Export Excel',"className": 'btn btn-lg btn-primary float-right-top test' }
+          ],
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [ -1,-2 ] }, 
+            { "bSearchable": false, "aTargets": [ -1,-2 ] }
+        ],
+        initComplete: function () {
+
+
+
+            this.api().columns().every(function () {
+                var column = this;
+
+                if (column.index() == 0) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+
+
+                 if (column.index() == 2) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 3) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 4) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 5) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 6) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 7) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 8) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 9) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 10) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+                if (column.index() == 11) {
+                    
+                    input = $('<input type="text" />').appendTo($(column.header())).on('keyup change', function () {
+                        if (column.search() !== this.value) {
+                            column.search(this.value)
+                                .draw();
+                        }
+                    });
+                    return;
+                }
+
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($("#filters").find("th").eq(column.index()))
+                    .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val());                                     
+
+                    column.search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+                
+                console.log(select);
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+     
+        }
+
+      });
+    })
+      </script>
+{% endblock %}

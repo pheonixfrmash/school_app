@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+{% block title %}Add Advertisement{% endblock %}
+{% load static %}
+
+{% block content %}
+<li>
+  <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left backBtn"></i> Back
+      </a>
+</li>
+{% endblock %}
+{% block body_block %}
+
+ <style type="text/css">
+    #adForm label.error {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      width: 100%;
+    }
+
+   button, .btn-primary1 {
+    background-color: #ebeff3 !important;
+    border-color: #edf1f5 !important;
+    font-size: 15px !important;
+    border-radius: 35px !important;
+     }
+  </style>
+
+ <!-- Content Wrapper. Contains page content -->
+
+ 
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Add Advertisement</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">          
+          <!-- right column -->
+          <div class="col-md-8" style="margin: 0 auto;">
+            <!-- general form elements disabled -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Add Advertisement</h3>
+              </div>
+              <form role="form" method="post" id="adForm" enctype="multipart/form-data">
+                <div class="card-body">
+                  <div class="card-body mob-padding-0">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Ad Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" name="ad_name" id="ad_name" placeholder="Advertisement Name">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Start Date<span class="text-danger">*</span></label>
+                          <input type="date" name="ad_from" id="start_date" class="form-control" placeholder="Start Date">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>End Date<span class="text-danger">*</span></label>
+                          <input type="date" name="ad_to" id="end_date" class="form-control" placeholder="End Date">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Site Position<span class="text-danger">*</span></label>
+                          <select id="site_selection" name="ad_position" class="form-control">
+                            <option  value="" selected="selected">---select---</option>
+                            {% for country_data in section_data %}
+                            <option value="{{country_data.id}}">{{country_data.name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4">
+                        <div class="form-group">
+                        </div>
+                      </div><br> -->
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Contact Name<span class="text-danger">*</span></label>
+                          <input type="text" placeholder="Contact Name" id="contact_name" name="contact_name" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Country <span class="text-danger">*</span></label>
+                          <select class="form-control" id="country" name="country" onchange="get_state(this.value)">
+                            <option  value="" selected="selected">---select---</option>
+                                 {% for country_data in country_data %}
+                                   <option value="{{country_data.id}}">{{country_data.name}}</option>
+                                  {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>State</label>
+                          <select class="form-control" id="state" name="state" value=(this.value) onchange="get_city(this.value)">
+                            <option  value="" selected="selected">---select---</option>
+                             {% for state_data in state_data %}
+                                 <option value="{{state_data.id}}">{{state_data.name}}</option>
+                             {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4">
+                        <div class="form-group">
+                        </div>
+                      </div> -->
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Contact No.<span class="text-danger">*</span></label>
+                          <input type="text" placeholder="Contact No." id="mobile_number" name="mobile_number" class="form-control">
+                        </div>
+                      </div>                      
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>City</label>
+                          <select class="form-control" id="city" name="city">
+                            <option  value="" selected="selected">---select---</option>
+                            {% for state_data in city_data %}
+                              <option value="{{state_data.id}}">{{state_data.name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group ">
+                          <label>School Name <span class="text-danger btn-primary1">*</span></label>
+                          <select id="school_id" name='school_id' multiple="multiple">                                
+                            {% for school_data in school_data %}
+                                <option value="{{ school_data.id }}">{{ school_data.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>  
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>School Board</label>
+                          <select class="form-control" id="board" name="board">
+                            <option  value="" selected="selected">---select---</option>
+                             {% for board_data in board_data %}
+                               <option value="{{board_data.id}}">{{board_data.name}}</option>
+                             {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Medium</label>
+                          <select id="school_medium" name="school_medium" class="form-control">
+                            <option value="" selected="selected">Select</option>
+                             {% for board_data in medium_data %}
+                               <option value="{{board_data.id}}">{{board_data.name}}</option>
+                             {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>School Class</label>
+                          <select id="class_id" name="class_id" class="form-control">
+                            <option value="" selected="selected">Select</option>
+                            {% for board_data in class_data %}
+                              <option value="{{board_data.id}}">{{board_data.name}}</option>
+                            {% endfor %}
+                          </select>                             
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Ad Type<span class="text-danger">*</span></label>
+                          <select id="ad_type" name="ad_type" class="form-control">
+                            <option value="" selected="selected">Select</option>
+                            {% for board_data in type_data %}
+                              <option value="{{board_data.id}}">{{board_data.name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>Ad Comments</label>
+                          <textarea placeholder="Ad Comments" id="message" name="message" class="form-control" maxlength="1000" onkeyup="limitText()"> </textarea>
+                          <p id="charNum">1000 characters remaining</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label>Ad URL</label>
+                        <input type="text" placeholder="Ad URL" id="ad_url" name="ad_url" class="form-control">
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Ad Image<span class="text-danger">*</span></label>
+                          <input type="file" id="ad_image" name="ad_image" placeholder="Select File" class="form-control">     
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">   
+                          <label>Preview</label><br>
+                          <img id="image" name="image" width="100px" src="#" alt="your image" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="card-footer text-algn-cnt">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </form>  
+            </div>  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#ad_image").change(function(){
+        readURL(this);
+    });
+</script>
+{% endblock %}

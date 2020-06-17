@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% block title %}Add User{% endblock %}
+{% load static %}
+
+{% block content %}
+<li>
+  <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left backBtn"></i> Back
+      </a>
+</li>
+{% endblock %}
+
+{% block body_block %}
+<style type="text/css">
+    #postcompExam label.error {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      width: 100%;
+    }
+    
+  </style>
+
+ <!-- Content Wrapper. Contains page content -->
+
+ 
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Post Exam</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">          
+          <!-- right column -->
+          <div class="col-md-8" style="margin: 0 auto;">
+            <!-- general form elements disabled -->
+            <div class="card card-primary exam_fields">
+              <div class="card-header">
+                <h3 class="card-title">Competitive Exam Preview</h3>
+              </div>
+              <!-- /.card-header -->
+              <form role="form" method="post" id="postcompExam" enctype="multipart/form-data">
+                <div class="card-body">
+                  <div class="card-body mob-padding-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="exam_id" id="exam_id" value="{{id}}">
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+
+                          <label>Exam Name<span class="text-danger"></span></label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-groupc added-preview">
+                          <label id="exam_name"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Description</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_desc"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>State</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_state">Maharashtra</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>City</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_city">Mumbai</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>School</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_school">All</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Class</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_class"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Amount/Fees</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_amount"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Tax</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_tax">&nbsp;18%</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Amount after Tax</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label  id="exam_total_amount"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Start Date</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_start_date"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>End Date</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_last_date"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Exam Date</label>                          
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group added-preview">
+                          <label id="exam_date"></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p>* User can edit changes if required by clicking on Edit,<br>
+                          * Once activity is confirmed notification will go to parents</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <div class="card-footer text-center">
+                          <button type="button" id="sbt_confirm" class="btn btn-primary">Confirm</button>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="card-footer text-center">
+                          <button type="button" id="sbt_cancel" class="btn btn-primary">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                  <!-- /.card-body -->
+                </div>
+              </form>
+              <!-- /.card -->            
+            </div>
+            <!--/.col (right) -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script type="text/javascript">
+        {% autoescape off %}
+            var result_data = {{ exam_dtls }};
+
+            console.log(result_data)
+            var i = 1;
+            var index = 0;
+            $("#exam_name").html(result_data[0]);
+            $("#exam_desc").html(result_data[1])
+            $("#exam_country").html(result_data[8])
+            $("#exam_state").html(result_data[2])
+            $("#exam_city").html(result_data[3])
+            $("#exam_school").html(result_data[4])
+            $("#exam_start_date").html(result_data[6])
+            $("#exam_last_date").html(result_data[7])
+            $("#exam_date").html(result_data[8])
+            $("#exam_amount").html(result_data[9])
+
+            $("#exam_total_amount").html(result_data[11])
+            $("#exam_class").html(result_data[5])
+
+        {% endautoescape %}
+
+
+    </script>
+{% endblock %}

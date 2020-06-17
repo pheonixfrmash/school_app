@@ -1,0 +1,285 @@
+
+{% extends "base.html" %}
+{% block title %}Manage Order{% endblock %}
+{% block body_block %}
+{% load static %}
+{% load custom_tags%}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Manage Roles</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item active">Manage Access</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+  
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              
+              <div class="card-header">
+                <div class="row">
+                {% for state_data in data %}                
+                  <div class="card-tools float-left mb-2 col-md-3">
+                    <a class="btn btn-block bg-gradient-primary btn-lg module_btn {% if forloop.counter0 == 0 %} active {% endif %}" data-module="{{forloop.counter}}">{{state_data.module_name}}</a>
+                  </div>               
+                              
+                {% endfor %}
+                </div>
+                
+              </div>
+              <!-- /.card-header -->
+              {% for state_data in data %}
+              <div class="card-body module_tbl_{{forloop.counter}}" {% if forloop.counter0 == 0 %} style="display:block" {% else %} style="display:none" {% endif %}>
+                <div class="table-responsive">
+                <table id="" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Sr No</th>
+                    <th>Role Id</th>
+                    <th class="input-filter">Role Name</th>
+                    {% for action_data in state_data.action_list %}
+                  
+                    <div class="card-tools float-left mr-2">
+                      <th>{{action_data.action_name}}</th>
+                  </div>
+                              
+                    {% endfor %}
+                               
+                  </tr>
+                  </thead>
+                  {% for role_data in roleList %}
+                  <tr>
+                    <td>
+                      {{role_data.count}}
+                    </td>
+                    <td>
+                      {{role_data.role_id}}
+                    </td>
+                    <td>
+                      {{role_data.role_name}}
+                    </td>
+                    {% for action_data in state_data.action_list %}
+                    <td>
+
+                      {% with role_data.role_id|addstr:'_'|addstr:state_data.module_id|addstr:'_'|addstr:action_data.action_id as rolesid %} 
+                      
+                      <input type='checkbox' {% if rolesid in datalistrole %} checked="checked" {% endif  %} class="add_role" value="{{role_data.role_id}}_{{state_data.module_id}}_{{action_data.action_id}}">
+                      {% endwith %}
+                    </td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+
+                  <tfoot>
+                      <tr>
+                          <th>Sr No</th>
+                          <th>Role Id</th>
+                          <th class="input-filter">Role Name</th>
+                         {% for action_data in state_data.action_list %}
+                  
+                          <div class="card-tools float-left mr-2">
+                            <th>{{action_data.action_name}}</th>
+                        </div>
+                                    
+                          {% endfor %}
+                      </tr>
+                  </tfoot>
+                  
+                </table>
+              </div>
+              </div>
+              {% endfor %}
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+     <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{state_data.module_id}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+  <!-- DataTables -->
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  
+  <script type="text/javascript">
+    {% autoescape off %}
+      var result_data = {{ data}};
+    {% endautoescape %}
+  
+      $(document).ready(function() {
+
+
+        $(document).on('click','.module_btn',function(){
+          var module_id = $(this).attr('data-module');
+          $('.card-body').css('display','none');
+          $('.module_btn').removeClass('active');
+          $(this).addClass('active');
+          $('.module_tbl_'+module_id).css('display','block');
+
+        });
+
+
+        $(document).on('change','.add_role',function(){
+          var getVal=$(this).val();
+          var checkStatus='checked';
+          if($(this).is(':checked'))
+          {
+            var checkStatus='checked';
+          }
+          else
+          {
+            var checkStatus='unchecked';
+          }
+
+
+          $.ajax({
+            'method':'POST',
+            'url':'set_module_role/',
+            'data': {'val':getVal,'status':checkStatus},
+            'dataType':'json',
+            success: function(response){
+             
+              if(response.status=='success')
+              {
+                toastr.success(response.msg).delay(1000);
+                setTimeout(function(){ window.location.href="/module_access/"; }, 2000);
+                
+              }
+              else
+              {
+                toastr.error(response.msg).delay(10000)
+                
+              }
+
+            },
+            error: function(xhr,status,errorThrown){
+              alert(xhr.responseText)
+            },
+          });
+
+        });
+  
+  
+        $('#shTable tfoot th.input-filter').each( function () {
+          var title = $(this).eq( $(this).index() ).text();
+          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+      } );
+     
+      
+        var shTable=jQuery('#shTable').DataTable({
+          "aaData":result_data,
+          "responsive": true,
+          "autoWidth": false,
+          "aoColumnDefs": [
+              { "bSortable": false, "aTargets": [ -1,-2 ] }, 
+              { "bSearchable": false, "aTargets": [ -1,-2 ] }
+          ],
+          initComplete: function () {
+                  this.api().columns('.select-filter').every( function () {
+                      var column = this;
+                      var select = $('<select><option value=""></option></select>')
+                              .appendTo( $(column.footer()).empty() )
+                              .on( 'change', function () {
+                                  var val = $.fn.dataTable.util.escapeRegex(
+                                          $(this).val()
+                                  );
+   
+                                  column
+                                          .search( val ? '^'+val+'$' : '', true, false )
+                                          .draw();
+                              } );
+   
+                      column.data().unique().sort().each( function ( d, j ) {
+                          select.append( '<option value="'+d+'">'+d+'</option>' )
+                      } );
+                  } );
+                  this.api().columns('.input-filter').every( function () {
+                      var that = this;
+   
+                      $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                          if ( that.search() !== this.value ) {
+                              that
+                                  .search( this.value )
+                                  .draw();
+                          }
+                      } );
+                  } );
+              }
+        });
+  
+  });
+  
+   </script>
+
+<script>
+function myFunction(value1) {
+ $.ajax({
+          'method':'POST',
+          'url':'module_access/get_module_access_details/'+value1,
+          'data': formData,
+          'cache':false,
+          'contentType': false,
+          'processData': false,
+          success: function(response){
+           
+            if(response.status=='success')
+            {
+              toastr.success('Module updated successfully').delay(1000);
+              setTimeout(function(){ window.location.href="/module_manager/"; }, 2000);
+              
+            }
+            else
+            {
+              toastr.error(response.msg).delay(10000)
+              
+            }
+
+          },
+          error: function(xhr,status,errorThrown){
+            alert(xhr.responseText)
+          },
+        });
+}
+</script>
+
+
+{% endblock %}

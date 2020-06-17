@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %}Edit User{% endblock %}
+{% load static %}
+{% block body_block %}
+<style type="text/css">
+    #editmoduleForm label.error {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#e82d2d;
+      width: 100%;
+    }
+    
+  </style>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title modal-title1" id="exampleModalLongTitle">  {{request.user.first_name}}  {{request.user.last_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div class="row">
+            <div class="col-lg-3 py-2">Mobile Number</div> <div class="col-lg-9 py-2">: <strong>{{request.user.username}}</strong> </div>
+         </div>
+            
+            <div class="row">
+            <div class="col-lg-3 py-2">Email</div> <div class="col-lg-9 py-2">: <strong>{{request.user.email}}</strong> </div>
+         </div>
+      </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+</div>
+ <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Edit User</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          
+          <!-- right column -->
+          <div class="col-md-8" style="margin: 0 auto;">
+            <!-- general form elements disabled -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Edit Module</h3>
+              </div>
+              <!-- /.card-header -->
+              <form role="form" method="post" id="editmoduleForm" enctype="multipart/form-data">
+              <div class="card-body">
+                  {% csrf_token %}
+                  {# A more "HTML" way of creating the login form#}
+                  <input type="hidden" name="user_id_pk" id="user_id_pk" value="{{data.user_id}}">
+                  <input type="hidden" name="district_selct" id="district_selct" value="{{data.district.id}}">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="module_name" id="module_name" value="{{data.module_name}}">
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>Description <span class="text-danger">*</span></label>
+                       <textarea class="form-control" name="description" id="description" >{{data.module_description}}</textarea>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <label for="customFile">Action Item</label>
+
+               <!-- <div class="table-responsive">  
+                         <table class="table table-bordered" id="dynamic_field">  
+                              <tr>  
+                                  <div class="col-md-6">
+                                    <td>
+                                    {% for state_data in data.action_name_list %}
+                                    <input type="text" value="{{state_data}}" id="name[]" name="name[]" class="form-control name_list" readonly="true" />
+                              
+                                    {% endfor %}
+                                  </td>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <td>
+                                    {% for state_data in data.action_url_list %}
+                                    <input type="text" value="{{state_data}}" id="name[]" name="name[]" class="form-control name_list" readonly="true"/>
+                              
+                                    {% endfor %}
+                                  </td>
+                                  </div>
+                                </tr>
+                                </table> 
+                                <div style="float: right;">
+                                    <button type="button"  name="add" id="add" class="btn btn-success pull-right" >Add More</button>           
+                                </div>
+                         
+                    </div> -->
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <label for="customFile">Action Item</label>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        {% for state_data in data.action_name_list %}
+                        <input type="text" value="{{state_data}}" id="name[]" name="name[]" class="form-control name_list" readonly="true" />
+                  
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        {% for state_data in data.action_url_list %}
+                        <input type="text" value="{{state_data}}" id="name[]" name="name[]" class="form-control name_list" readonly="true"/>
+                  
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <button type="button"  name="add" id="add" class="btn btn-success pull-right" >Add More</button> 
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>Module Path <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="module_path" id="module_path" value="{{data.module_path}}">
+                      </div>
+                    </div>
+                    
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>Module Icon</label>
+                        <input type="text" class="form-control" name="module_icon" id="module_icon" value="{{data.module_icon}}">
+                      </div>
+                    </div>
+                    
+                  </div>
+                  
+                   
+                    
+                    
+                  
+               
+              </div>
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Update</button>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </form>
+            <!-- /.card -->
+            
+          </div>
+          <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock %}

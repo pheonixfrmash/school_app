@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>School App | Role Selection</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static "plugins/fontawesome-free/css/all.min.css" %}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{% static "plugins/icheck-bootstrap/icheck-bootstrap.min.css" %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static "dist/css/adminlte.min.css" %}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{% static "plugins/toastr/toastr.min.css" %}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="card">
+        <div class="card-body login-card-body">
+          <p class="login-box-msg"><b>Role Selection</b></p>
+          <form role="form" method="post" enctype="multipart/form-data" id="roleselectionForm">
+          <div class="form-group"> 
+            <label>Roles Assigned<span class="text-danger">*</span></label>
+            <select class="form-control" id="roles" name="roles">
+                  {% for country_data in data %}
+                    <option value="{{country_data}}">{{country_data}}</option>
+                    {% endfor %}
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+                <button type="submit" style="align-content: center;margin-left: 110px;"
+                        class="btn btn-primary" id="submitBtn" onclick="loaddata()">Submit
+                </button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+<script src="{% static "plugins/jquery/jquery.min.js" %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static "plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+<!-- AdminLTE App -->
+
+<!-- Toastr -->
+<script src="{% static "plugins/toastr/toastr.min.js" %}"></script>
+<script src="{% static "dist/js/adminlte.min.js" %}"></script>
+<script src="{% static "dist/js/jquery_validation/jquery.validate.min.js" %}"></script>
+<script src="{% static "dist/js/common.js" %}"></script>
+
+<script type="text/javascript">
+  function myFunction(){
+    
+    var mobile_number = document.getElementById("mobile_number").value;
+    var arr = {'mobile_number':mobile_number};
+    if (mobile_number == "") {
+       document.getElementById("demo1").innerHTML = '<span style="color: red;">Please enter a mobile number</span>';
+       return false;
+     }
+     else{
+      document.getElementById("demo1").innerHTML = ""
+     }
+    $.ajax({
+          'method':'POST',
+          'url':'/generateOTP',
+          'data': mobile_number,
+          'data': arr,
+          'dataType': 'json',
+          success: function(response){
+            if(response.status=='success')
+            {
+             
+              toastr.success('OTP has been sent successfully.')
+              
+
+            }
+            else
+            {
+             
+              toastr.error(response.msg)
+            }
+
+          },
+          error: function(xhr,status,errorThrown){
+            toastr.error(xhr.responseText)
+           
+          },
+        });
+
+ }  
+
+</script>
+<script type="text/javascript">
+roles=document.getElementById('roles').value
+console.log(roles);
+function loaddata(){
+    // Put the object into storage
+  localStorage.setItem('role', roles);
+}
+</script>
+</body>
+</html>

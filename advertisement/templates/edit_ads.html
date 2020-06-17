@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+{% block title %}View Ads{% endblock %}
+{% load static %}
+
+{% block content %}
+    <li>
+        <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left backBtn"></i> Back
+        </a>
+    </li>
+{% endblock %}
+
+{% block body_block %}
+<style type="text/css">
+        #viewschoolForm label.error {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e82d2d;
+            width: 100%;
+        }
+
+    </style>
+    <!-- Content Wrapper. Contains page content -->
+
+
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                      <h1></h1>
+                    </div>
+                    <div class="col-sm-6">
+                      <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Edit Advertisement</li>
+                      </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">          
+              <!-- right column -->
+              <div class="col-md-8" style="margin: 0 auto;">
+                <!-- general form elements disabled -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Edit Advertisement</h3>
+                  </div>
+                  <form role="form" method="post" id="editadForm" enctype="multipart/form-data">
+                    <div class="card-body">
+                      <div class="card-body mob-padding-0">
+                        {% csrf_token %}
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Ad Name <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" name="ad_name" id="ad_name" placeholder="Advertisement Name">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Start Date<span class="text-danger">*</span></label>
+                              <input type="date" name="ad_from" id="ad_from" class="form-control" value={{data.start_date}} placeholder="Start Date" value="{{data.start_data|date:'Y-m-d'}}">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>End Date<span class="text-danger">*</span></label>
+                              <input type="date" name="ad_to" id="ad_to" class="form-control" value={{data.end_date}} placeholder="End Date">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Site Position<span class="text-danger">*</span></label>
+                              <select id="ad_position" name="ad_position" class="form-control">
+                                <option  value="" selected="selected">---select---</option>
+                                  {% for section_data in section_data %}
+                                    <option value="{{section_data.id}}">{{section_data.name}}</option>
+                                  {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Contact Name<span class="text-danger">*</span></label>
+                              <input type="text" placeholder="Contact Name" id="contact_name" name="contact_name" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Contact No.<span class="text-danger">*</span></label>
+                              <input type="text" placeholder="Contact No." id="mobile_number" name="mobile_number" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Country <span class="text-danger">*</span></label>
+                              <select class="form-control" id="country" name="country" onchange="get_state(this.value)">
+                                <option  value="" selected="selected">---select---</option>
+                                {% for country_data in country_data %}
+                                <option value="{{country_data.id}}">{{country_data.name}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>State</label>
+                              <select class="form-control" id="state" name="state">
+                                <option  value="" selected="selected">---select---</option>
+                                  {% for state_data in state_data %}
+                                    <option value="{{state_data.id}}">{{state_data.name}}</option>
+                                  {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>City</label>
+                              <select class="form-control" id="city" name="city">
+                                <option  value="" selected="selected">---select---</option>
+                                {% for city_data in city_data %}
+                                  <option value="{{city_data.id}}">{{city_data.name}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group ">
+                              <label>School Name <span class="text-danger btn-primary1">*</span></label>
+                              <select id="school_id" name='school_id' multiple="multiple" readonly>
+                                {% for school_data in school_data %}
+                                <option value="{{ school_data.id }}">{{ school_data.name }}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>School Board</label>
+                              <select class="form-control" id="board" name="board">
+                                <option  value="" selected="selected">---select---</option>
+                                 {% for board_data in board_data %}
+                                   <option value="{{board_data.id}}">{{board_data.name}}</option>
+                                 {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Medium</label>
+                              <select id="school_medium" name="school_medium" class="form-control">
+                                <option value=" " selected="selected">Select</option>
+                                {% for medium_data in medium_data %}
+                                <option value="{{medium_data.id}}">{{medium_data.name}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>School Class</label>
+                              <select id="class_id" name="class_id" class="form-control">
+                                <option value="" selected="selected">Select</option>
+                                {% for class_data in class_data %}
+                                <option value="{{class_data.id}}">{{class_data.name}}</option>
+                                {% endfor %}
+                              </select>    
+                            </div>
+                          </div>                      
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Ad URL</label>
+                              <input type="text" placeholder="Ad URL" id="ad_url" name="ad_url" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label>Ad Comments</label>
+                              <textarea placeholder="Ad Comments" id="message" name="message" class="form-control" maxlength="1000" onkeyup="limitText()"> </textarea>
+                              <p id="charNum">1000 characters remaining</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Ad Image<span class="text-danger">*</span></label>
+                              <input type="file" id="ad_image" name="ad_image" placeholder="Select File" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">   
+                              <label>Preview</label><br>
+                              <img id="image" name="image" width="100px" >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-footer text-algn-cnt">
+                          <button type="submit" id ='save_ads' class="btn btn-primary">Submit</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+  
+</div>
+
+<script src="{% static 'plugins/jquery/jquery.min.js' %}">
+</script>
+<script type="text/javascript">
+function stringToDate(_date,_format,_delimiter)
+    {
+            var formatLowerCase=_format.toLowerCase();
+            var formatItems=formatLowerCase.split(_delimiter);
+            var dateItems=_date.split(_delimiter);
+            var monthIndex=formatItems.indexOf("mm");
+            var dayIndex=formatItems.indexOf("dd");
+            var yearIndex=formatItems.indexOf("yyyy");
+            var month=parseInt(dateItems[monthIndex]);
+            month-=1;
+            var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+            return formatedDate;
+       }
+function convertDate(inputFormat) {
+  function pad(s) { return (s < 10) ? '0' + s : s; }
+  var d = new Date(inputFormat)
+  return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
+} 
+
+        {% autoescape off %}
+            var result_data = {{data}};
+            var country_data = {{country_data}};
+            var state_data = {{state_data}};
+            console.log(state_data);
+            console.log(country_data);
+            console.log(result_data);
+            console.log(result_data['start_date']);
+            var i=1;
+            var index=0;
+            var start_date = stringToDate(result_data['start_date'],"yyyy-mm-dd","-");
+            var end_date = stringToDate(result_data['end_date'],"yyyy-mm-dd","-");
+            console.log(end_date); 
+            date_start = convertDate(start_date);
+            date_end = convertDate(end_date);
+            console.log(date_start);
+            console.log(result_data['country_name']);
+            $("#ad_name").val(result_data['ad_name']);
+            $("#ad_position").val($.trim(result_data['ad_section']));
+            $("#school_id").val(result_data['school_name']);
+            $("#class_id").val(result_data['class_name']);
+            $("#contact_name").val(result_data['contact_name']);
+            $("#mobile_number").val(result_data['mobile_number']);
+            $("#start_date").text(result_data['start_date']);
+            $("#end_date").text(date_end);
+            $("#board").val(result_data['board_name']);
+            $("#school_medium").val(result_data['medium_name']);
+            $("#image").attr('src',"http://localhost:8000/"+result_data['ad_image']);
+            $("#file").val(result_data['ad_image']);
+            $("#ad_url").val(result_data['ad_url']);
+            $("#country").val(result_data['country_name']);
+            $("#state").val(result_data['state_name']);
+            $("#city").val(result_data['city_name']);
+            $("#message").val(result_data['ad_message']);
+            $('#save_ads').val(result_data['ad_id']);
+            $('#row'+0+'').remove();
+            section_data = {{section_data}}
+            school_data = {{school_data}}
+            country_data = {{country_data}}
+            state_data = {{state_data}}
+            city_data = {{city_data}}
+            board_data = {{board_data}}
+            medium_data = {{ medium_data}}
+            class_data = {{class_data}}
+        {% endautoescape %}
+
+
+</script>  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#ad_image").change(function(){
+        readURL(this);
+    });
+</script>
+
+{% endblock %}

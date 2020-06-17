@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block title %}Add Advertisement{% endblock %}
+{% load static %}
+
+{% block content %}
+    <li>
+        <a href="javascript:window.history.back();" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left backBtn"></i> Back
+        </a>
+    </li>
+{% endblock %}
+{% block body_block %}
+
+    <style type="text/css">
+        #adForm label.error {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e82d2d;
+            width: 100%;
+        }
+
+        button, .btn-primary1 {
+            background-color: #ebeff3 !important;
+            border-color: #edf1f5 !important;
+            font-size: 15px !important;
+            border-radius: 35px !important;
+        }
+    </style>
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item active">Add Resource</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- right column -->
+                    <div class="col-md-8" style="margin: 0 auto;">
+                        <!-- general form elements disabled -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Add Resource</h3>
+                            </div>
+                            <form role="form" method="post" enctype="multipart/form-data" id="resourceForm">
+                                <div class="card-body">
+                                    <div class="card-body mob-padding-0">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="add_ad">Add New Resource</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+
+                                                    <label>Resource Title<span
+                                                            class="text-danger">*</span></label><input type="text"
+                                                                                                       class="form-control"
+                                                                                                       name="resource_name"
+                                                                                                       id="resource_name"
+                                                                                                       placeholder="Resource Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Resource Description<span
+                                                            class="text-danger">*</span></label><input type="text"
+                                                                                                       class="form-control"
+                                                                                                       name="resource_description"
+                                                                                                       id="resource_description"
+                                                                                                       placeholder="Resource Description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Attachment:</label><span class="text-danger">*</span>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="file_media"
+                                                               id="fileToUpload">
+                                                        <label class="custom-file-label" for="user_photo">Choose
+                                                            file</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Country <span class="text-danger">*</span></label>
+                                                    <select class="form-control" id="country" name="country"
+                                                            value=this.value
+                                                            onchange="get_state(this.value)" multiple>
+
+                                                        {% for country_data in country_data %}
+                                                            <option value="{{ country_data.id }}">{{ country_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>State</label>
+                                                    <select class="form-control" id="state" name="state"
+                                                            onchange="get_city(this.value)"
+                                                            multiple>
+
+                                                        {% for state_data in state_data %}
+                                                            <option value="{{ state_data.id }}">{{ state_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>City</label>
+                                                    <select class="form-control" id="city" name="city" multiple>
+
+                                                        {% for city_data in city_data %}
+                                                            <option value="{{ city_data.id }}">{{ city_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="row">
+                                        <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>School Board</label>
+                                                    <select class="form-control" id="board" name="board"
+                                                            multiple>
+
+                                                        {% for board_data in board_data %}
+                                                            <option value="{{ board_data.id }}">{{ board_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Medium</label>
+                                                    <select class="form-control" id="medium" name="medium"
+                                                            multiple="multiple">
+
+                                                        {% for board_data in medium_data %}
+                                                            <option value="{{ board_data.id }}">{{ board_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>School Name</label>
+                                                    <select class="form-control" id="school" name='school' multiple>
+
+                                                        {% for school_data in school_data %}
+                                                            <option value="{{ school_data.id }}">{{ school_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+                                        </div>
+                                        <br>
+
+
+                                        <div class="row">
+<div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>School Class</label>
+                                                    <select class="form-control" id="class_master" name="class_master"
+                                                            multiple="multiple">
+
+                                                        {% for board_data in class_data %}
+                                                            <option value="{{ board_data.id }}">{{ board_data.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Category</label><span class="text-danger">*</span>
+                                                    <select class="form-control" id="content_type" name="content_type">
+                                                        <option value="" selected="selected">---select---</option>
+                                                        {% for category in category %}
+                                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="card-footer text-algn-cnt col-md-12">
+                                                <button type="submit" style="margin-left: 220px;"
+                                                        class="btn btn-primary">Submit
+                                                </button>
+                                                <button type="cancel" style='margin-right:16px' class="btn btn-primary">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function loadDoc() {
+            var xhttp = new XMLHttpRequest();
+            var form_data = $(resourceForm).serialize();
+            console.log(form_data);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert(response);
+                }
+            };
+            xhttp.open("POST", "add", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("csrftoken", "DQSWzGUMBPmGqgJRT2SCzfcy5yuUDinMKXUBHHmhkZ2afLldNjhJEmi0oJTk1hg3");
+            xhttp.setRequestHeader("sessionid", "hgd3rnnsncwumc6f542ukuvt0hsj0c7u");
+            xhttp.send(form_data);
+            console.log("form submitted")
+        }
+    </script>
+    <script type="text/javascript">
+        function get_city(val) {
+            {% autoescape off %}
+                var result_data = {{city_data}};
+            {% endautoescape %}
+            var country_id = val;
+            console.log(country_id);
+            var option = "<option value=' '>--Select City--</option>"
+            for (var state in result_data) {
+                if (result_data[state].state == country_id) {
+                    option += "<option value='" + $.trim(result_data[state].id) + "'>" + $.trim(result_data[state].name) + "</option>";
+                }
+            }
+            console.log(result_data);
+            $("#city").html(option);
+
+        }
+    </script>
+    <script type="text/javascript">
+        function get_state(val) {
+            //  console.log(val);
+            {% autoescape off %}
+                var result_data = {{state_data}};
+                // console.log(typeof(result_data));
+                console.log(result_data);
+                var state_data = [];
+            {% endautoescape %}
+            // console.log(result_data);
+            var country_id = val;
+            var option = "<option value=''>--Select State--</option>";
+            // console.log(val);
+            for (var state in result_data) {
+                //  console.log(result_data[state].id);
+                if (result_data[state].country == country_id)
+                //  {  console.log(result_data[state].id,result_data[state].name);
+                //    option+="<option value='"+$.trim(result_data[state].id)+"'>"+$.trim(result_data[state].name)+"</option>";
+                //  }
+                // console.log(typeof(result_data[state].id));
+                {
+
+                    console.log(result_data[state].id, result_data[state].name);
+                    $('#state').append($('<option>', {
+                        value: result_data[state].id,
+                        text: result_data[state].name
+                    }));
+
+                }
+            }
+            // console.log(option);
+
+
+        }
+     console.log(school_data);
+    </script>
+
+
+{% endblock %}
