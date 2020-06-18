@@ -1122,7 +1122,7 @@ def view_school(request,user_id_pk,school_id_pk):
 
 def send_file(request):
 
-    file_path="C:/Users/ANAND/Downloads/sample_test.xlsx"
+    file_path="C:/Users/Downloads/sample_test.xlsx" #Enter your file path here where you store the master files
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
