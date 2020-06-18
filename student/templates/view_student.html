@@ -100,28 +100,6 @@
                                                            id="dob" placeholder="Date Of Birth">
                                                 </div>
                                             </div>
-{#                                            <div class="col-lg-4">#}
-{##}
-{#                                                <div class="form-group">#}
-{#                                                    <label>School Name <span class="text-danger">*</span></label>#}
-{#                                                    <input type="text" class="form-control" name="school_name"#}
-{#                                                           id="school_name" placeholder="School Name">#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="col-lg-4">#}
-{#                                                <div class="form-group">#}
-{#                                                    <label>Middle Name <span class="text-danger">*</span></label>#}
-{#                                                    <input type="text" class="form-control" name="student_middle_name"#}
-{#                                                           id="student_middle_name" placeholder="Student Middle Name">#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="col-lg-4">#}
-{#                                                <div class="form-group">#}
-{#                                                    <label>Last Name <span class="text-danger">*</span></label>#}
-{#                                                    <input type="text" class="form-control" name="student_last_name"#}
-{#                                                           id="student_last_name" placeholder="Student Last Name">#}
-{#                                                </div>#}
-{#                                            </div>#}
                                         </div>
                                         <div class="row">
 
@@ -168,7 +146,7 @@
                                                             file</label>
                                                     </div>
                                                     <div class="input-group-append">
-                                                        <span><img src={{ school_photo }} width="50" height="50"></span>
+                                                        <span><img id="image" name="image" width="50" height="50"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -358,7 +336,7 @@
             var result_data = {{ student_details }};
             var primary_parent_dtl = {{ primary_parent_dtl }}
             var secondary_parent_dtl = {{ secondary_parent_dtl }}
-
+            console.log(result_data);
             console.log(primary_parent_dtl)
             console.log(secondary_parent_dtl)
             var i = 1;
@@ -375,7 +353,7 @@
             $("#gender").val(result_data[12])
             $("#class_label").val(result_data[11])
             $("#division_label").val(result_data[15])
-
+            $('#image').attr('src',"http://localhost:8000/"+result_data[10]);
             $("#p_parent_first_name").val(primary_parent_dtl[1])
             $("#p_parent_last_name").val(primary_parent_dtl[2])
             $("#p_parent_mobile_no").val(primary_parent_dtl[0])

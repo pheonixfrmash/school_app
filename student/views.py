@@ -479,6 +479,8 @@ def student_upload(request):
 
 @csrf_exempt
 def edit_student(request, student_id_pk):
+  user=user_models.User.objects.get(username=request.user.username)
+  if user.has_perm('student.view_student'):
     data = {}
     action_url_list = []
     action_name_list = []
@@ -508,11 +510,13 @@ def edit_student(request, student_id_pk):
                            str(student_obj.class_name.class_name),
                            str(student_obj.gender.capitalize()), str(student_obj.date_of_birth),
                            str(student_obj.school.school_name), str(student_obj.division)]
+        print(student_details)
     else:
         student_details = []
 
     try:
         user_obj = user_models.User.objects.get(username=student_obj.parent)
+        print(user_obj)
     except:
         user_obj = None
 
@@ -618,15 +622,17 @@ def edit_student(request, student_id_pk):
             userprofile_obj.secondary_email_id = s_parent_email_id
             userprofile_obj.save()
         
-        response = JsonResponse({'status': 'success', 'msg': "School Updated Successfully"})
+        response = JsonResponse({'status': 'success', 'msg': "Student Updated Successfully"})
         return response
-
-    return render(request, 'edit_student.html',
+    else:
+     return render(request, 'edit_student.html',
                   {'data': data, "country_data": country_data, "state_data": state_data, "city_data": city_data,
                    'student_details': student_details, 'primary_parent_dtl': primary_parent_dtl,
                    'secondary_parent_dtl': secondary_parent_dtl, 'student_id_pk': student_id_pk,
                    'user_photo': user_photo})
-
+     
+  else:
+            return render(request,'forbidden_page.html')
 
 @csrf_exempt
 def view_student(request, student_id_pk):
@@ -701,7 +707,7 @@ def view_student(request, student_id_pk):
 
 
 def send_file_student(request):
-    file_path = "C:/Users/ANAND/Downloads/student.xlsx"
+    file_path = "C:/Users/Downloads/student_master.xlsx"  #Enter your path for master files here
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")

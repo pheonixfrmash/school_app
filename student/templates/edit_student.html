@@ -100,28 +100,6 @@
                                                            id="dob" placeholder="Date Of Birth">
                                                 </div>
                                             </div>
-{#                                            <div class="col-lg-4">#}
-{##}
-{#                                                <div class="form-group">#}
-{#                                                    <label>School Name <span class="text-danger">*</span></label>#}
-{#                                                    <input type="text" class="form-control" name="school_name"#}
-{#                                                           id="school_name" placeholder="School Name">#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="col-lg-4">#}
-{#                                                <div class="form-group">#}
-{#                                                    <label>Middle Name <span class="text-danger">*</span></label>#}
-{#                                                    <input type="text" class="form-control" name="student_middle_name"#}
-{#                                                           id="student_middle_name" placeholder="Student Middle Name">#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="col-lg-4">#}
-{#                                                <div class="form-group">#}
-{#                                                    <label>Last Name <span class="text-danger">*</span></label>#}
-{#                                                    <input type="text" class="form-control" name="student_last_name"#}
-{#                                                           id="student_last_name" placeholder="Student Last Name">#}
-{#                                                </div>#}
-{#                                            </div>#}
                                         </div>
                                         <div class="row">
 
@@ -359,8 +337,9 @@
             var primary_parent_dtl = {{ primary_parent_dtl }}
             var secondary_parent_dtl = {{ secondary_parent_dtl }}
 
-            console.log(primary_parent_dtl)
-            console.log(secondary_parent_dtl)
+            console.log(primary_parent_dtl);
+            console.log(secondary_parent_dtl);
+            console.log(result_data);
             var i = 1;
             var index = 0;
             $("#student_first_name").val(result_data[0])

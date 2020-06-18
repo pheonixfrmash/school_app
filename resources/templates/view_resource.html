@@ -47,6 +47,7 @@
         <!-- Main content -->
 
      <form role="form" method="post" enctype="multipart/form-data" id = "viewresource">
+     {% if request.session.role != "Parent" %}
      <fieldset disabled>
      <div class="card-body">
      <div class="card-body mob-padding-0">
@@ -147,14 +148,29 @@
             <img id="image" name="image" width="100px" />
         </div>
     </div></div><br>
-       </fieldset>
-       <div class="col-lg-4">
-        <div class="form-group">
-            <label>Download</label><br>
-            <a id="resource_download" name="resource_download" download="resource_files">Download</a>
-             <img id="image" name="image" width="100px" /> 
-        </div>
-    </div>
+       </fieldset> 
+       {% endif %}
+       {% if request.session.role != "Super Admin" %}
+       <div class="card-body">
+        <div class="card-body mob-padding-0">
+          {% csrf_token %}
+          <div class="row">      
+            <div class="form-group">
+              <label for="view_resource">View Resource</label>
+            </div></div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <img id="image" name="image" width="200px" /> 
+                <br>
+                <br>
+                <br>
+                <label>Download</label><br>
+                <a id="resource_download" name="resource_download" download="resource_files">Download</a>  
+              </div>
+            </div>
+       </div>
+      </div>
+      {% endif %}
   </div><br>
   
   </form>
