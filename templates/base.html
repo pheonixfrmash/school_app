@@ -190,10 +190,8 @@
     
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-         
-
+        <p> {{module_access_role}} </p>
           {% for i in request|module_access_role %}
-              
                   <li class="nav-item has-treeview">
                  <a href="{% url i.re_direct_path %}" class="nav-link {% if i.url == request.path %} active {% endif %}">
               <i class="nav-icon fas fa-clone"></i>

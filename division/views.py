@@ -110,6 +110,7 @@ class Division(View):
 
     @login_required
     def list_divisions_data(request):
+     print(request.session['role'])
      user=user_models.User.objects.get(username=request.user.username)
      if user.has_perm('division.view_division'):
         data=[]

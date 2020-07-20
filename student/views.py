@@ -707,8 +707,8 @@ def view_student(request, student_id_pk):
 
 
 def send_file_student(request):
-    file_path = "C:/Users/Downloads/student_master.xlsx"  #Enter your path for master files here
-    if os.path.exists(file_path):
+  file_path = "C:/Users/Downloads/student_master.xlsx"  #Enter your path for master files here
+  if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)

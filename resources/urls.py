@@ -5,6 +5,6 @@ urlpatterns = [
     path('add',Resources.add_resource,name='resource_add'),
     path('details/<id>',Resources.view_resources,name='resource_details'),
     path('edit/<id>',Resources.edit_resources,name='resource_edit'),
-    path('',Resources.list_resources,name='resource'),
+    path('',Resources.list_resources,name='resources'),
     path('save_resources/<id>',Resources.save_resources,name='save_resource')
 ]

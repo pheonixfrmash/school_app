@@ -128,8 +128,6 @@ def get_module_access(request):
             role_name = role_name.split("-", 1)[0]
             role_name_dict={'count':count,'role_name':role_name,'role_id':role_id}
             role_name_list.append(role_name_dict)
-
-
             data.append([count,role_id,role_name,"<a href='/module_access/get_module_access_details/116' class='btn'><input type='checkbox' value=""></a>","<a href='/roles/edit_role/"+str(i[0])+"' class='btn'><input type='checkbox' value=""></a>","<a href='/roles/edit_role/"+str(i[0])+"' class='btn'><input type='checkbox' value=""></a>","<a href='/roles/edit_role/"+str(i[0])+"' class='btn'><input type='checkbox' value=""></a>"])
 
         role_map=models_access.Role_Mapping.objects.all().values_list('role_id','module_id','action_id')

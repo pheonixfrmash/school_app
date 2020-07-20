@@ -1121,9 +1121,8 @@ def view_school(request,user_id_pk,school_id_pk):
 
 
 def send_file(request):
-
-    file_path="C:/Users/Downloads/school_master.xlsx" #Enter your path for master files here
-    if os.path.exists(file_path):
+   file_path="C:/Users/Downloads/sample_test.xlsx" #Enter your file path here where you store the master files
+   if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)

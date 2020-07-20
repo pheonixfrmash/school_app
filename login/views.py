@@ -115,7 +115,6 @@ def roleselection(request) :
     return render(request,'role_selection.html',{'data':group_list})
   else:
       role=request.POST.get('roles')
-      print(role)
       request.session['role']=role
       response=JsonResponse({'status':'success','msg':'Login successfully.'})
       return response

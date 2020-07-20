@@ -631,8 +631,8 @@ def view_fees(request, fees_id_pk):
                   {'data': data, 'fees_id_pk': fees_id_pk, 'bank_list': bank_list})
 def send_file(request):
 
-    file_path = "C:/Users/Downloads/fees_master.xlsx" #Enter your path for master files here
-    if os.path.exists(file_path):
+  file_path = "C:/Users/Downloads/fees_master.xlsx" #Enter your path for master files here
+  if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
