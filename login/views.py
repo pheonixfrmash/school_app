@@ -104,15 +104,12 @@ def roleselection(request) :
     school_id=user_models.UserProfile.objects.filter(user=request_user_profile[0].id).values_list('school_id')
     for i in user_group:
        j=i[0].split('-',2)
-       print(j[0])
-  
        role_details={'id': i[1], 'name': j[0]}
        group_list.append(role_details)
     return render(request,'role_selection.html',{'data':group_list})
   else:
       role=request.POST.get('roles')
       school_name=school_group.objects.filter(group=role,app_user=request.user.pk).values_list('school_id',flat=True)
-      print(school_name)
       request.session['role']=role
       response=JsonResponse({'status':'success','msg':'Login successfully.'})
       return response
