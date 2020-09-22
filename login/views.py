@@ -26,12 +26,12 @@ import math, random
 # Create your views here.
 from users import models as user_models
 from django.db.models import Q
+from login.models import school_group
 
 
 
 @csrf_exempt
 def user_login(request):
-    print(request)
     if request.method == 'POST':
         data={}
         username = request.POST.get('mobile_number')
@@ -44,19 +44,14 @@ def user_login(request):
                 login(request,user)
                 userprofileDetails = user_models.UserProfile.objects.filter(Q(user__username=username) & Q(otp=password)).values_list('user__first_name','user__last_name')
                 if userprofileDetails:
-                    #print("hereeeeeeeee")
-                    response=JsonResponse({'status':'success'})
-                    
+                    response=JsonResponse({'status':'success'}) 
                     return response
-
                 else:
                     response=JsonResponse({'status':'error','msg':'Invalid Otp'})
                     return response
-
             else:
-                response=JsonResponse({'status':'error','msg':'Your account was inactive'})
-                return response
-            
+                response=JsonResponse({'status':'error','msg':'Your account is inactive'})
+                return response     
         else:
             response=JsonResponse({'status':'error','msg':'Username Does not Exits'})
             return response
@@ -105,16 +100,19 @@ def roleselection(request) :
     count = 1
     request_user_profile=User.objects.filter(username=str(request.user))
     request_user=user_models.UserProfile.objects.filter(user=request_user_profile[0].id)
-    user_group = request.user.groups.values_list('name', flat=True)
+    user_group = request.user.groups.values_list('name','pk')
     school_id=user_models.UserProfile.objects.filter(user=request_user_profile[0].id).values_list('school_id')
     for i in user_group:
-       print(i)
-       j=i.split('-',2)
+       j=i[0].split('-',2)
        print(j[0])
-       group_list.append(j[0])
+  
+       role_details={'id': i[1], 'name': j[0]}
+       group_list.append(role_details)
     return render(request,'role_selection.html',{'data':group_list})
   else:
       role=request.POST.get('roles')
+      school_name=school_group.objects.filter(group=role,app_user=request.user.pk).values_list('school_id',flat=True)
+      print(school_name)
       request.session['role']=role
       response=JsonResponse({'status':'success','msg':'Login successfully.'})
       return response
