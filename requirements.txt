@@ -13,7 +13,7 @@ django-filter==2.2.0
 django-import-export==1.2.0
 django-otp==0.8.1
 django-select-multiple-field==0.4.2
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 et-xmlfile==1.0.1
 idna==2.8
 imageio==2.8.0
