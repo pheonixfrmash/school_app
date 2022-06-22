@@ -26,7 +26,7 @@ MarkupPy==1.14
 matplotlib==3.2.1
 moviepy==1.0.3
 networkx==2.4
-numpy==1.18.1
+numpy==1.22.0
 odfpy==1.4.0
 openpyxl==3.0.0
 pandas==1.0.3
